@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DRACARYS — Attack. Prove. Fix. Retest.</title>
+<meta name="description" content="An evidence-first DAST scanner. Every finding is confirmed by a deterministic oracle plus captured evidence — the LLM never decides truth. SARIF-native, CI-ready, with verified remediation." />
+<meta property="og:title" content="DRACARYS — Attack. Prove. Fix. Retest." />
+<meta property="og:description" content="Evidence-first DAST scanner with verified remediation. SARIF-native, CI-ready." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐉</text></svg>" />
+<style>
+  :root{
+    --bg:#0b0d12; --bg-2:#11141c; --panel:#141824; --line:#232838;
+    --ink:#e9ecf5; --muted:#98a0b5; --dim:#6b7280;
+    --flame:#ff6b2b; --flame-2:#ffb347; --ok:#3ddc97; --crit:#ff3b30;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--flame-2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+  code,pre{font-family:var(--mono)}
+
+  header{padding:72px 0 56px;text-align:center;border-bottom:1px solid var(--line);
+    background:radial-gradient(900px 380px at 50% -120px,rgba(255,107,43,.16),transparent 70%)}
+  .logo{font-size:56px;line-height:1}
+  h1{margin:12px 0 4px;font-size:44px;letter-spacing:-.02em;font-weight:800}
+  .tag{font-family:var(--mono);color:var(--flame);letter-spacing:.16em;font-size:13px;text-transform:uppercase;margin-bottom:18px}
+  .lede{max-width:640px;margin:0 auto;color:var(--muted);font-size:18px}
+  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+  .btn{display:inline-block;padding:11px 20px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid var(--line)}
+  .btn.primary{background:linear-gradient(180deg,var(--flame),#e2551b);color:#fff;border-color:transparent}
+  .btn.primary:hover,.btn:hover{text-decoration:none;filter:brightness(1.1)}
+  .btn.ghost{background:var(--panel);color:var(--ink)}
+
+  section{padding:56px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:.14em;color:var(--flame);margin:0 0 20px;font-family:var(--mono)}
+  h3{font-size:19px;margin:0 0 6px}
+  p{color:var(--muted)}
+  .ink{color:var(--ink)}
+
+  pre{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+    overflow-x:auto;font-size:13.5px;line-height:1.65;color:#dfe4f0}
+  pre .c{color:#7d879e}
+  pre .k{color:var(--flame-2)}
+
+  .grid{display:grid;gap:16px}
+  @media(min-width:720px){.grid.g3{grid-template-columns:repeat(3,1fr)}.grid.g2{grid-template-columns:repeat(2,1fr)}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
+  .card p{margin:0;font-size:14.5px}
+
+  .stats{display:grid;gap:14px}
+  @media(min-width:720px){.stats{grid-template-columns:repeat(4,1fr)}}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;text-align:center}
+  .stat b{display:block;font-size:28px;font-family:var(--mono);color:var(--ok);letter-spacing:-.02em}
+  .stat span{font-size:12.5px;color:var(--muted)}
+
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--flame);font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono)}
+  td.cwe{font-family:var(--mono);color:var(--muted);white-space:nowrap}
+  .scroll{overflow-x:auto}
+
+  .note{background:rgba(255,107,43,.07);border:1px solid rgba(255,107,43,.28);border-radius:12px;padding:18px 20px}
+  .note strong{color:var(--flame-2)}
+  footer{padding:40px 0 64px;text-align:center;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">🐉</div>
+    <h1>DRACARYS</h1>
+    <div class="tag">Attack. Prove. Fix. Retest.</div>
+    <p class="lede">An evidence-first DAST scanner. Every finding is confirmed by a
+      <span class="ink">deterministic oracle</span> plus captured request/response evidence —
+      the language model never decides what counts as a vulnerability.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/Aman-Thaper/dracarys">View on GitHub</a>
+      <a class="btn ghost" href="https://github.com/Aman-Thaper/dracarys/blob/main/USAGE.md">Documentation</a>
+      <a class="btn ghost" href="https://github.com/Aman-Thaper/dracarys/releases">Releases</a>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>Install</h2>
+    <pre><span class="c"># CLI</span>
+pipx install dracarys-dast
+
+<span class="c"># scan a local app — loopback needs no authorization flag</span>
+dracarys scan http://127.0.0.1:3000
+
+<span class="c"># an authorized target: SARIF + HTML, fail CI on high severity or above</span>
+dracarys scan https://staging.example.com --yes-i-am-authorized \
+  --sarif out.sarif --html report.html --fail-on high</pre>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Proof it generalizes</h2>
+    <div class="stats">
+      <div class="stat"><b>1.0</b><span>recall on independent testbed apps</span></div>
+      <div class="stat"><b>0</b><span>false positives on the hardened control</span></div>
+      <div class="stat"><b>80</b><span>tests, ~85% coverage</span></div>
+      <div class="stat"><b>8</b><span>detector classes, all CWE-mapped</span></div>
+    </div>
+    <p style="margin-top:18px">These are not claims about the bundled demo. <code>dracarys scan-selftest</code>
+      runs the scanner against independent vulnerable applications it was not tuned on, plus a
+      hardened control app, and scores the result against ground truth. It runs on every CI build.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The differentiator: verified remediation</h2>
+    <div class="grid g3">
+      <div class="card"><h3>1 · Prove</h3><p>Exploit the finding against the running target and capture the evidence — paired baseline and attack exchanges, hashed and redacted.</p></div>
+      <div class="card"><h3>2 · Fix</h3><p>Generate a remediation, then rebuild the target with the patch applied.</p></div>
+      <div class="card"><h3>3 · Retest</h3><p>Replay the original attack against the patched build. It reports <strong style="color:var(--ok)">FIX VERIFIED</strong> only when the exploit actually stops working.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>In your pipeline</h2>
+    <pre>- id: scan
+  <span class="k">uses:</span> Aman-Thaper/dracarys@v0.1.1
+  <span class="k">with:</span>
+    target: http://localhost:3000
+    fail-on: high
+
+- <span class="k">if:</span> always()
+  <span class="k">uses:</span> github/codeql-action/upload-sarif@v3
+  <span class="k">with:</span>
+    sarif_file: ${{ steps.scan.outputs.sarif-file }}</pre>
+    <p>Findings land in the GitHub Security tab as SARIF 2.1.0. Reports also render as
+      HTML, JSON, Markdown, or a terminal table, and <code>--fail-on</code> sets the exit code.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Detectors &amp; oracles</h2>
+    <div class="scroll">
+    <table>
+      <tr><th>Class</th><th>CWE</th><th>What actually confirms it</th></tr>
+      <tr><td>SQL injection</td><td class="cwe">CWE-89</td><td>A database error signature absent from the baseline, a boolean TRUE/FALSE divergence, or a time delay that dominates a control request.</td></tr>
+      <tr><td>Reflected XSS</td><td class="cwe">CWE-79</td><td>A unique payload reflected <em>unencoded</em> in an HTML response.</td></tr>
+      <tr><td>IDOR / BOLA</td><td class="cwe">CWE-639</td><td>A second identity fetches another user's object and the content matches the owner's.</td></tr>
+      <tr><td>Open redirect</td><td class="cwe">CWE-601</td><td>A parameter drives a 30x <code>Location</code> to an attacker-controlled host.</td></tr>
+      <tr><td>Exposed files &amp; secrets</td><td class="cwe">CWE-538/200</td><td>A sensitive path returns recognizable content, or a body matches a secret pattern.</td></tr>
+      <tr><td>Security misconfiguration</td><td class="cwe">CWE-16</td><td>Missing CSP, HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy; version disclosure.</td></tr>
+      <tr><td>Verbose error disclosure</td><td class="cwe">CWE-209</td><td>Stack traces or database error text in ordinary responses.</td></tr>
+      <tr><td>Exposed API schema</td><td class="cwe">CWE-200</td><td>An OpenAPI document served publicly.</td></tr>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Also available as</h2>
+    <div class="grid g2">
+      <div class="card"><h3>MCP server</h3><p>Give an agent the scanner. <code>pip install "dracarys-dast[mcp]"</code> then
+        <code>claude mcp add dracarys -- dracarys-mcp</code>. The authorization gate still applies — an agent
+        cannot point it at an arbitrary host on its own.</p></div>
+      <div class="card"><h3>HTTP API</h3><p><code>POST /api/scan</code> runs a scan behind the same policy engine,
+        for wiring DRACARYS into an existing platform.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Honest scope</h2>
+    <div class="note">
+      <p><strong>What it is:</strong> a real but early-stage lightweight DAST — evidence-first,
+      low false positives, SARIF/CI-native, with verified-fix retesting.
+      <strong>What it is not:</strong> a Burp or ZAP replacement. Coverage is the core eight classes
+      above; SSRF, CSRF, path traversal and SSTI are not implemented yet.</p>
+      <p style="margin:12px 0 0"><strong>Authorization:</strong> payloads are non-destructive by contract —
+      read-only SQL, benign markers, short sleeps. Loopback targets scan freely; any other host is
+      refused unless you explicitly assert you are authorized to test it. Only scan systems you have
+      permission to test.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>MIT licensed · <a href="https://github.com/Aman-Thaper/dracarys">github.com/Aman-Thaper/dracarys</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

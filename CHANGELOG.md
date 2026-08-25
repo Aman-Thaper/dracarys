@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.1
+Publishing fixes — first release usable from the GitHub Marketplace.
+
+- **Fix:** `action.yml` referenced `infra/docker/Dockerfile.action`, but GitHub requires a
+  container action's local image file to be named `Dockerfile`. Moved to the repo root so
+  the Action can actually build for consumers.
+- **Fix:** `ci.yml` had an unquoted step name containing `: `, making the workflow invalid
+  YAML — every run failed at startup with no jobs. Quoted.
+- Replaced placeholder publishing metadata (repo URLs, author, description, SARIF
+  `informationUri`, README/example `uses:` refs) with the real `Aman-Thaper/dracarys`.
+
 ## 0.1.0
 Initial release.
 

@@ -25,7 +25,7 @@ jobs:
           DRACARYS_DATABASE_URL: sqlite+aiosqlite:///./ci.db
       - name: Test with coverage
         run: pytest --cov=dracarys --cov=lab --cov-report=term-missing --cov-fail-under=80
-      - name: Evaluation gate (lab campaign: recall/precision/retest)
+      - name: "Evaluation gate (lab campaign: recall/precision/retest)"
         run: dracarys eval
       - name: Scanner generalization gate (independent apps)
         run: dracarys scan-selftest

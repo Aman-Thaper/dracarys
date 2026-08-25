@@ -93,7 +93,7 @@ jobs:
       - uses: actions/checkout@v4
       # ...start your app so it's reachable at http://localhost:3000...
       - id: scan
-        uses: your-org/dracarys@v0
+        uses: Aman-Thaper/dracarys@v0
         with:
           target: http://localhost:3000
           fail-on: high

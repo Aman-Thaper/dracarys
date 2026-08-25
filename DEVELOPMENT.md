@@ -50,7 +50,8 @@ lab/                   DRACARYS BANK app + ground truth + seed
 web/                   Next.js command center
 tests/                 unit · integration · e2e · evaluation
 alembic/               migrations
-infra/docker/          Dockerfiles + entrypoint
+infra/docker/          Dockerfiles (api, web) + entrypoints
+Dockerfile             GitHub Action image (root-named, required by action.yml)
 ```
 
 ## Adding a vulnerability (and keeping the loop honest)

@@ -19,7 +19,7 @@ jobs:
 
       # 2) Run the DRACARYS scan (fails the job on high+ findings by default).
       - id: scan
-        uses: your-org/dracarys@v0            # or ./ when used from this repo
+        uses: Aman-Thaper/dracarys@v0            # or ./ when used from this repo
         with:
           target: http://localhost:3000
           fail-on: high

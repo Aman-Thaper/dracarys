@@ -1,6 +1,6 @@
 name: "DRACARYS DAST Scan"
 description: "Autonomous DAST scanner with evidence-backed findings and SARIF output for GitHub code scanning."
-author: "DRACARYS"
+author: "Aman Thaper"
 branding:
   icon: "shield"
   color: "orange"
@@ -38,7 +38,7 @@ outputs:
     value: ${{ inputs.sarif-file }}
 runs:
   using: "docker"
-  image: "infra/docker/Dockerfile.action"
+  image: "Dockerfile"
   args:
     - ${{ inputs.target }}
     - ${{ inputs.fail-on }}

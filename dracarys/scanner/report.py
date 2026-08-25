@@ -85,7 +85,7 @@ def to_sarif(result: ScanResult) -> str:
         "version": "2.1.0",
         "runs": [{
             "tool": {"driver": {
-                "name": "DRACARYS", "informationUri": "https://github.com/dracarys/dracarys",
+                "name": "DRACARYS", "informationUri": "https://github.com/Aman-Thaper/dracarys",
                 "version": __version__, "rules": list(rules.values()),
             }},
             "results": results,

@@ -33,7 +33,7 @@ positives, SARIF/CI-native, plus verified-fix retesting. NOT a Burp/ZAP replacem
 - ✅ Next.js command center (visual, real-time) for the lab campaign.
 - ✅ Quality: **72 tests, ~85% coverage**, `ruff` clean, `mypy` clean (65 files).
   ~7,000 LOC Python + ~880 LOC TypeScript.
-- ⛔ NOT done: git not initialized; not published to PyPI or GitHub Marketplace; scanner
+- ⛔ NOT done: not published to PyPI or GitHub Marketplace (git IS initialized, first commit in); scanner
   results not yet surfaced in the web UI; no background/async scan jobs; detector coverage
   is the "core 8" (no SSRF/CORS/CSRF/auth-session yet). See §9 Roadmap.
 
@@ -113,8 +113,9 @@ lab/                         DRACARYS BANK — deliberately vulnerable target + 
 web/                         Next.js 14 command center (TS + Tailwind), proxies /api to backend
 tests/                       unit · integration · e2e · evaluation
 alembic/                     migrations (0001 initial = create_all from metadata)
-infra/docker/                Dockerfiles (api, web, action) + entrypoints  (documented prod path)
-action.yml                   GitHub Marketplace Action (Docker) → SARIF
+infra/docker/                Dockerfiles (api, web) + entrypoints  (documented prod path)
+Dockerfile                   image for the GitHub Action (must be root-named `Dockerfile`)
+action.yml                   GitHub Marketplace Action (Docker, runs ./Dockerfile) → SARIF
 .github/workflows/           ci.yml (lint/test/eval/selftest) + example-dast.yml (consumer template)
 docs/ + *.md                 README, USAGE, ARCHITECTURE, SECURITY, EVALUATION, DEVELOPMENT, API, CHANGELOG, LICENSE
 ```
@@ -175,7 +176,7 @@ on the hardened `safe` app. Gated by `dracarys scan-selftest` and `tests/integra
 ## 9. Roadmap / next steps (pick up here)
 
 **To actually ship (needs the owner's accounts — I can't do these):**
-1. `git init` + clean first commit (repo is NOT a git repo yet) + tag `v0`.
+1. ~~`git init` + clean first commit~~ ✅ done (`82f445e`). Remaining: push to GitHub + tag `v0`.
 2. Publish `dracarys-dast` to PyPI (`python -m build && twine upload`; needs token).
 3. Publish the Action to GitHub Marketplace (push repo, release, submit `action.yml`).
 

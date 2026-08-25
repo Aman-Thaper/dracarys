@@ -5,18 +5,20 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "dracarys-dast"
 version = "0.1.0"
-description = "Autonomous, controlled red-team platform. ATTACK. PROVE. FIX. RETEST."
+description = "Evidence-first DAST scanner with verified remediation. Attack. Prove. Fix. Retest."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 keywords = ["security", "dast", "scanner", "sast", "sarif", "appsec", "pentest", "vulnerability"]
-authors = [{ name = "DRACARYS" }]
+authors = [{ name = "Aman Thaper", email = "work.aman04@gmail.com" }]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Topic :: Security",
     "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Environment :: Console",
 ]
 dependencies = [
     "fastapi>=0.115",
@@ -44,9 +46,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/dracarys/dracarys"
-Documentation = "https://github.com/dracarys/dracarys/blob/main/USAGE.md"
-Issues = "https://github.com/dracarys/dracarys/issues"
+Homepage = "https://github.com/Aman-Thaper/dracarys"
+Documentation = "https://github.com/Aman-Thaper/dracarys/blob/main/USAGE.md"
+Source = "https://github.com/Aman-Thaper/dracarys"
+Changelog = "https://github.com/Aman-Thaper/dracarys/blob/main/CHANGELOG.md"
+Issues = "https://github.com/Aman-Thaper/dracarys/issues"
 
 [project.scripts]
 dracarys = "dracarys.cli:main"

@@ -105,6 +105,19 @@ jobs:
 
 A ready-to-copy workflow is in [`.github/workflows/example-dast.yml`](.github/workflows/example-dast.yml).
 
+### VS Code extension
+
+Scan from inside the editor and review findings beside your code.
+
+```
+Command palette → "DRACARYS: Scan a target URL"
+                → "DRACARYS: Open a SARIF report"
+```
+
+Source in `editors/vscode/`; it drives the same CLI, so `pipx install dracarys-dast` first.
+Non-loopback targets require confirming authorization in a modal, and the CLI enforces the
+same gate independently.
+
 ### MCP server (agent clients)
 
 Expose DRACARYS to any MCP-capable agent (Claude Code, Claude Desktop, …) over stdio:

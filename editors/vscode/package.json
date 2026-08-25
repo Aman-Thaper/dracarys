@@ -1,0 +1,84 @@
+{
+  "name": "dracarys-dast",
+  "displayName": "DRACARYS DAST",
+  "description": "Evidence-first DAST scanning from inside VS Code. Scan a running app and review findings with their captured evidence.",
+  "version": "0.1.1",
+  "publisher": "aman-thaper",
+  "license": "MIT",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Testing",
+    "Other"
+  ],
+  "keywords": [
+    "security",
+    "dast",
+    "sarif",
+    "appsec",
+    "vulnerability"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aman-Thaper/dracarys.git",
+    "directory": "editors/vscode"
+  },
+  "homepage": "https://aman-thaper.github.io/dracarys/",
+  "bugs": {
+    "url": "https://github.com/Aman-Thaper/dracarys/issues"
+  },
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "dracarys.scan",
+        "title": "DRACARYS: Scan a target URL",
+        "category": "DRACARYS"
+      },
+      {
+        "command": "dracarys.openSarif",
+        "title": "DRACARYS: Open a SARIF report",
+        "category": "DRACARYS"
+      }
+    ],
+    "configuration": {
+      "title": "DRACARYS",
+      "properties": {
+        "dracarys.executable": {
+          "type": "string",
+          "default": "dracarys",
+          "description": "Path to the dracarys executable. Install it with: pipx install dracarys-dast"
+        },
+        "dracarys.target": {
+          "type": "string",
+          "default": "http://127.0.0.1:3000",
+          "description": "Default target URL offered when starting a scan."
+        },
+        "dracarys.maxPages": {
+          "type": "number",
+          "default": 60,
+          "description": "Crawl budget: maximum pages to visit."
+        },
+        "dracarys.passive": {
+          "type": "boolean",
+          "default": false,
+          "description": "Passive checks only — send no active injection probes."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0"
+  }
+}

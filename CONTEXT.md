@@ -29,6 +29,7 @@ positives, SARIF/CI-native, plus verified-fix retesting. NOT a Burp/ZAP replacem
 - ✅ SARIF 2.1.0 output; GitHub Marketplace **Action** (`action.yml`, Docker) + example workflow.
 - ✅ `POST /api/scan` HTTP endpoint.
 - ✅ MCP server (`dracarys-mcp`) for agent clients; supports mcp SDK 1.x and 2.x.
+- ✅ VS Code extension (`editors/vscode`, builds to a .vsix); landing page on GitHub Pages.
 - ✅ Verified-remediation campaign loop against the bundled DRACARYS BANK lab (attack graph,
   remediation, patched rebuild, retest → FIX VERIFIED).
 - ✅ Next.js command center (visual, real-time) for the lab campaign.
@@ -113,6 +114,8 @@ dracarys/
   evaluation/                harness.py (lab campaign scoring) + scanner_eval.py (generalization)
 lab/                         DRACARYS BANK — deliberately vulnerable target + ground truth + seed (in-process)
 web/                         Next.js 14 command center (TS + Tailwind), proxies /api to backend
+editors/vscode/              VS Code extension (TS) — scan command + SARIF viewer, packaged with vsce
+site/                        static landing page → GitHub Pages
 tests/                       unit · integration · e2e · evaluation
 alembic/                     migrations (0001 initial = create_all from metadata)
 infra/docker/                Dockerfiles (api, web) + entrypoints  (documented prod path)

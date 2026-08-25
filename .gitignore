@@ -18,5 +18,8 @@ htmlcov/
 web/node_modules/
 web/.next/
 web/out/
+editors/vscode/node_modules/
+editors/vscode/out/
+editors/vscode/*.vsix
 # OS
 .DS_Store

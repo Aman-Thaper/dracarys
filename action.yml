@@ -1,0 +1,49 @@
+name: "DRACARYS DAST Scan"
+description: "Autonomous DAST scanner with evidence-backed findings and SARIF output for GitHub code scanning."
+author: "DRACARYS"
+branding:
+  icon: "shield"
+  color: "orange"
+inputs:
+  target:
+    description: "Base URL to scan (e.g. http://localhost:3000). Spin up your app in a prior step."
+    required: true
+  fail-on:
+    description: "Fail the job if a finding at/above this severity is found (critical|high|medium|low|none)."
+    required: false
+    default: "high"
+  passive:
+    description: "Passive checks only (no active injection)."
+    required: false
+    default: "false"
+  auth-header:
+    description: "Optional auth header for the scanner, formatted 'Name: value'."
+    required: false
+    default: ""
+  authorized:
+    description: "Set 'true' to confirm you are authorized to scan a non-loopback target."
+    required: false
+    default: "false"
+  sarif-file:
+    description: "Path to write the SARIF report."
+    required: false
+    default: "dracarys.sarif"
+  max-pages:
+    description: "Maximum pages to crawl."
+    required: false
+    default: "60"
+outputs:
+  sarif-file:
+    description: "Path to the generated SARIF report."
+    value: ${{ inputs.sarif-file }}
+runs:
+  using: "docker"
+  image: "infra/docker/Dockerfile.action"
+  args:
+    - ${{ inputs.target }}
+    - ${{ inputs.fail-on }}
+    - ${{ inputs.passive }}
+    - ${{ inputs.auth-header }}
+    - ${{ inputs.authorized }}
+    - ${{ inputs.sarif-file }}
+    - ${{ inputs.max-pages }}

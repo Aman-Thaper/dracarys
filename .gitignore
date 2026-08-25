@@ -1,0 +1,20 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+# Local databases
+*.db
+# Env
+.env
+# Node / Next
+web/node_modules/
+web/.next/
+web/out/
+# OS
+.DS_Store

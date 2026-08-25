@@ -1,0 +1,32 @@
+# Example: run DRACARYS against your app in CI and publish findings to the
+# GitHub Security tab. Copy this into your own repository.
+name: dast
+on: [workflow_dispatch, pull_request]
+
+permissions:
+  contents: read
+  security-events: write   # required to upload SARIF
+
+jobs:
+  dracarys:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 1) Start your application however you like (compose, a server, etc.)
+      #    and wait until it is reachable. Example:
+      # - run: docker compose up -d && ./scripts/wait-for http://localhost:3000
+
+      # 2) Run the DRACARYS scan (fails the job on high+ findings by default).
+      - id: scan
+        uses: your-org/dracarys@v0            # or ./ when used from this repo
+        with:
+          target: http://localhost:3000
+          fail-on: high
+          # auth-header: "Authorization: Bearer ${{ secrets.STAGING_TOKEN }}"
+
+      # 3) Upload findings to the Security tab (runs even if the scan failed).
+      - if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ steps.scan.outputs.sarif-file }}

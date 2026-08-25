@@ -1,0 +1,64 @@
+# DRACARYS — production-shaped local topology.
+#
+# The API self-contains the vulnerable lab (in-process mode) so the full
+# ATTACK -> PROVE -> FIX -> RETEST loop works with just `docker compose up`.
+# A standalone `lab` service is included for direct exploration, and Postgres +
+# Redis represent the production datastore and (future) task queue.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: dracarys
+      POSTGRES_PASSWORD: dracarys_local_only
+      POSTGRES_DB: dracarys
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dracarys"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.api
+    environment:
+      DRACARYS_DATABASE_URL: postgresql+asyncpg://dracarys:dracarys_local_only@postgres:5432/dracarys
+      DRACARYS_CORS_ORIGINS: '["http://localhost:3000"]'
+      # Offensive tooling is scoped to loopback + the lab ports only.
+      DRACARYS_LLM_PROVIDER: heuristic
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    ports: ["8000:8000"]
+
+  lab:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.api
+    command: ["lab"]
+    environment:
+      DRACARYS_LAB_PORT: "8888"
+    ports: ["8888:8888"]
+
+  web:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile.web
+    environment:
+      DRACARYS_API_URL: http://api:8000
+    depends_on: [api]
+    ports: ["3000:3000"]
+
+volumes:
+  pgdata:

@@ -1,0 +1,32 @@
+# DRACARYS control-plane API (also bundles the lab for in-process mode).
+FROM python:3.12-slim AS base
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+# System deps kept minimal; add build-essential only if a wheel needs compiling.
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt requirements.lock ./
+RUN pip install --require-hashes=false -r requirements.txt psycopg2-binary asyncpg
+
+COPY pyproject.toml README.md ./
+COPY dracarys ./dracarys
+COPY lab ./lab
+COPY alembic ./alembic
+COPY alembic.ini ./
+RUN pip install -e .
+
+COPY infra/docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 8000
+HEALTHCHECK --interval=10s --timeout=3s --retries=5 \
+  CMD curl -fsS http://127.0.0.1:8000/api/health || exit 1
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["api"]

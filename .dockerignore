@@ -1,0 +1,12 @@
+.venv
+**/__pycache__
+**/*.pyc
+web/node_modules
+web/.next
+.git
+*.db
+.pytest_cache
+.ruff_cache
+.mypy_cache
+htmlcov
+.coverage

@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+
+html, body { background: #07080c; }
+
+body {
+  color: #d7dbe4;
+  background:
+    radial-gradient(1100px 520px at 22% -160px, rgba(255,107,43,0.10), transparent 70%),
+    radial-gradient(900px 500px at 100% 0%, rgba(0,255,156,0.05), transparent 60%),
+    #07080c;
+  min-height: 100vh;
+}
+
+/* CRT scanline overlay for the hacker/terminal feel */
+body::after {
+  content: "";
+  position: fixed; inset: 0; z-index: 60; pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg, rgba(0,0,0,0.16) 0px, rgba(0,0,0,0.16) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode: multiply; opacity: 0.5;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(0,255,156,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,107,43,0.035) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+.card {
+  @apply rounded-lg border border-ink-600/80 bg-ink-800/70 backdrop-blur;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+/* terminal-style section header: "> attack_graph" */
+.term-h {
+  @apply flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-acid;
+}
+.term-h::before { content: ">"; @apply text-ember; }
+
+.hud { @apply font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500; }
+
+.cursor::after { content: "▋"; @apply text-acid; animation: blink 1.05s steps(1) infinite; }
+
+.sev-critical { @apply text-flame border-flame/40 bg-flame/10; }
+.sev-high     { @apply text-ember border-ember/40 bg-ember/10; }
+.sev-medium   { @apply text-gold border-gold/40 bg-gold/10; }
+.sev-low      { @apply text-sky border-sky/40 bg-sky/10; }
+.sev-info     { @apply text-slate-300 border-slate-500/40 bg-slate-500/10; }
+
+.btn { @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 font-mono text-sm font-semibold uppercase tracking-wider transition; }
+.btn-primary { @apply bg-ember text-black hover:bg-ember-soft shadow-glow; }
+.btn-ghost { @apply border border-ink-600 text-slate-200 hover:border-acid/60 hover:text-acid; }
+.btn:disabled { @apply cursor-not-allowed opacity-40; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #0d0f16; }
+::-webkit-scrollbar-thumb { background: #212636; border-radius: 6px; border: 2px solid #0d0f16; }
+::-webkit-scrollbar-thumb:hover { background: #2f3548; }
+
+::selection { background: rgba(0,255,156,0.25); color: #fff; }

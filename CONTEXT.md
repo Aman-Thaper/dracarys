@@ -28,10 +28,11 @@ positives, SARIF/CI-native, plus verified-fix retesting. NOT a Burp/ZAP replacem
 - ✅ `dracarys scan` CLI (auth gate, safe payloads, severity exit codes, multi-format reports).
 - ✅ SARIF 2.1.0 output; GitHub Marketplace **Action** (`action.yml`, Docker) + example workflow.
 - ✅ `POST /api/scan` HTTP endpoint.
+- ✅ MCP server (`dracarys-mcp`) for agent clients; supports mcp SDK 1.x and 2.x.
 - ✅ Verified-remediation campaign loop against the bundled DRACARYS BANK lab (attack graph,
   remediation, patched rebuild, retest → FIX VERIFIED).
 - ✅ Next.js command center (visual, real-time) for the lab campaign.
-- ✅ Quality: **72 tests, ~85% coverage**, `ruff` clean, `mypy` clean (65 files).
+- ✅ Quality: **80 tests, ~85% coverage**, `ruff` clean, `mypy` clean (65 files).
   ~7,000 LOC Python + ~880 LOC TypeScript.
 - ⛔ NOT done: not published to PyPI or GitHub Marketplace (git IS initialized, first commit in); scanner
   results not yet surfaced in the web UI; no background/async scan jobs; detector coverage
@@ -106,6 +107,7 @@ dracarys/
     testbed.py               built-in independent vulnerable apps (blog/api) + hardened "safe" control + ground truth
     models.py                RequestTemplate, ScanFinding, ScanConfig, ScanResult
     cwe.py                   CWE ids + generic remediation text per class
+  mcp_server.py              MCP server (`dracarys-mcp`, stdio) — scan_target + list_detectors
   api/                       FastAPI app + service + routes (health, targets, campaigns, resources,
                              audit, metrics, scan) ; /api/scan runs the scanner
   evaluation/                harness.py (lab campaign scoring) + scanner_eval.py (generalization)
@@ -116,7 +118,8 @@ alembic/                     migrations (0001 initial = create_all from metadata
 infra/docker/                Dockerfiles (api, web) + entrypoints  (documented prod path)
 Dockerfile                   image for the GitHub Action (must be root-named `Dockerfile`)
 action.yml                   GitHub Marketplace Action (Docker, runs ./Dockerfile) → SARIF
-.github/workflows/           ci.yml (lint/test/eval/selftest) + example-dast.yml (consumer template)
+.github/workflows/           ci.yml (lint/test/eval/selftest) · example-dast.yml (consumer template)
+                             · publish-pypi.yml (Trusted Publishing on release)
 docs/ + *.md                 README, USAGE, ARCHITECTURE, SECURITY, EVALUATION, DEVELOPMENT, API, CHANGELOG, LICENSE
 ```
 

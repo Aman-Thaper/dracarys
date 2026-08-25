@@ -12,7 +12,12 @@ from datetime import UTC, datetime
 from dracarys.domain.enums import Severity
 from dracarys.scanner.models import ScanFinding, ScanResult
 
-__version__ = "0.1.0"
+try:  # keep the reported version in step with the installed package
+    from importlib.metadata import version as _pkg_version
+
+    __version__ = _pkg_version("dracarys-dast")
+except Exception:  # pragma: no cover - source checkout without install metadata
+    __version__ = "0.0.0+dev"
 
 _SARIF_LEVEL = {
     Severity.CRITICAL: "error", Severity.HIGH: "error", Severity.MEDIUM: "warning",

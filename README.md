@@ -55,8 +55,9 @@ false positives, (b) first-class SARIF/CI integration, and (c) verified-fix rete
 
 ```bash
 pipx install dracarys-dast          # or: pip install dracarys-dast
+pip install "dracarys-dast[mcp]"    # + the MCP server, for agent clients
 # from source:
-git clone <repo> && cd dracarys && make setup
+git clone https://github.com/Aman-Thaper/dracarys && cd dracarys && make setup
 ```
 
 ## Use it
@@ -103,6 +104,25 @@ jobs:
 ```
 
 A ready-to-copy workflow is in [`.github/workflows/example-dast.yml`](.github/workflows/example-dast.yml).
+
+### MCP server (agent clients)
+
+Expose DRACARYS to any MCP-capable agent (Claude Code, Claude Desktop, …) over stdio:
+
+```bash
+pip install "dracarys-dast[mcp]"
+dracarys-mcp
+```
+
+Register it with Claude Code:
+
+```bash
+claude mcp add dracarys -- dracarys-mcp
+```
+
+Tools: `scan_target` (run a scan, return findings) and `list_detectors` (the CWE-mapped
+catalogue). The same authorization gate applies — a non-loopback target requires
+`authorized=true`, so an agent cannot point the scanner at an arbitrary host on its own.
 
 ### API / hosted
 

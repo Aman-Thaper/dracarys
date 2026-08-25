@@ -75,6 +75,21 @@ itself.
 [`.github/workflows/example-dast.yml`](.github/workflows/example-dast.yml) for a full
 pipeline that starts your app, scans it, and uploads SARIF to the Security tab.
 
+## MCP server
+```bash
+pip install "dracarys-dast[mcp]"
+dracarys-mcp                       # stdio transport
+claude mcp add dracarys -- dracarys-mcp
+```
+| Tool | Arguments | Returns |
+|---|---|---|
+| `scan_target` | `target`, `authorized`, `passive`, `max_pages`, `include_time_based`, `auth_headers`, `output` (`summary`\|`json`\|`markdown`) | findings + severity breakdown + scan stats |
+| `list_detectors` | — | vulnerability classes with CWE ids and remediation guidance |
+
+Non-loopback targets are refused unless `authorized=true`; the tool description tells the
+model not to set that flag on its own initiative. Findings still come from deterministic
+oracles — the agent consuming this server never decides whether a bug is real.
+
 ## HTTP API
 ```bash
 make api    # http://127.0.0.1:8000

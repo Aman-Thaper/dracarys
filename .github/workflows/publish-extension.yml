@@ -1,0 +1,57 @@
+# Build the VS Code extension on every release, attach the .vsix, and publish it
+# to whichever marketplaces have a token configured.
+#
+# The build and the release asset always run. Publishing is opt-in per registry:
+#   VSCE_PAT  -> VS Code Marketplace   (https://marketplace.visualstudio.com/manage)
+#   OVSX_PAT  -> Open VSX Registry     (https://open-vsx.org — VSCodium, Cursor, Gitpod)
+# Add either with:  gh secret set VSCE_PAT
+# Neither secret being present is not an error; those steps are simply skipped.
+name: publish-extension
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    working-directory: editors/vscode
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    # Job-level so the `if:` guards below can read them; a step cannot see its own env.
+    env:
+      VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      OVSX_PAT: ${{ secrets.OVSX_PAT }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install
+        run: npm ci
+
+      - name: Compile
+        run: npm run compile
+
+      - name: Package
+        run: npx --yes @vscode/vsce package --allow-missing-repository
+
+      - name: Attach the .vsix to the release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ github.event.release.tag_name }}" ./*.vsix --clobber
+
+      - name: Publish to the VS Code Marketplace
+        if: env.VSCE_PAT != ''
+        run: npx --yes @vscode/vsce publish --packagePath ./*.vsix -p "$VSCE_PAT"
+
+      - name: Publish to Open VSX
+        if: env.OVSX_PAT != ''
+        run: npx --yes ovsx publish ./*.vsix -p "$OVSX_PAT"

@@ -4,7 +4,7 @@
 > the project is, how it's built, how to run it, the non-obvious decisions and gotchas,
 > and what's left to do. Detailed docs: README, USAGE, ARCHITECTURE, SECURITY, EVALUATION.
 
-_Last updated: 2026-08-25._
+_Last updated: 2026-08-26. Current version: **0.1.2**._
 
 ---
 
@@ -33,11 +33,15 @@ positives, SARIF/CI-native, plus verified-fix retesting. NOT a Burp/ZAP replacem
 - ✅ Verified-remediation campaign loop against the bundled DRACARYS BANK lab (attack graph,
   remediation, patched rebuild, retest → FIX VERIFIED).
 - ✅ Next.js command center (visual, real-time) for the lab campaign.
-- ✅ Quality: **80 tests, ~85% coverage**, `ruff` clean, `mypy` clean (65 files).
-  ~7,000 LOC Python + ~880 LOC TypeScript.
-- ⛔ NOT done: not published to PyPI or GitHub Marketplace (git IS initialized, first commit in); scanner
-  results not yet surfaced in the web UI; no background/async scan jobs; detector coverage
-  is the "core 8" (no SSRF/CORS/CSRF/auth-session yet). See §9 Roadmap.
+- ✅ Quality: **80 tests**, ~85% coverage, `ruff` clean, `mypy` clean (66 files).
+  ~7,200 LOC Python + ~1,200 LOC TypeScript (command center + extension).
+- ✅ **Shipped:** public repo `Aman-Thaper/dracarys`, releases v0.1.0/v0.1.1/**v0.1.2**,
+  moving tag `v0` → v0.1.2. **GitHub Marketplace listing is LIVE**
+  (github.com/marketplace/actions/dracarys-dast-scan). Landing page live on GitHub Pages.
+- ⛔ NOT done: **PyPI upload still failing** (see §10); VS Code Marketplace not published
+  (needs a publisher + PAT; the .vsix is attached to each release meanwhile); scanner results
+  not surfaced in the web UI; no background/async scan jobs; detector coverage is the
+  "core 8" (no SSRF/CORS/CSRF/auth-session yet). See §9 Roadmap.
 
 ## 3. Environment constraints (IMPORTANT, non-obvious)
 
@@ -181,25 +185,50 @@ on the hardened `safe` app. Gated by `dracarys scan-selftest` and `tests/integra
 
 ## 9. Roadmap / next steps (pick up here)
 
-**To actually ship (needs the owner's accounts — I can't do these):**
-1. ~~`git init` + clean first commit~~ ✅ done (`82f445e`). Remaining: push to GitHub + tag `v0`.
-2. Publish `dracarys-dast` to PyPI (`python -m build && twine upload`; needs token).
-3. Publish the Action to GitHub Marketplace (push repo, release, submit `action.yml`).
+**Distribution (owner's accounts required):**
+1. ~~git init, push, tag, release~~ ✅ done — v0.1.2, `v0` moving tag.
+2. ~~GitHub Marketplace Action~~ ✅ **LIVE**.
+3. ⛔ **PyPI** — blocked, see §10. Workflow is correct and proven; only auth is missing.
+4. ⛔ **VS Code Marketplace** — needs a publisher id (`aman-thaper`, must match
+   `editors/vscode/package.json`) + an Azure DevOps PAT with *Marketplace → Manage* scope
+   and organization *All accessible organizations*. Set `VSCE_PAT` and `publish-extension.yml`
+   does the rest. Open VSX is the lower-friction alternative via `OVSX_PAT`.
 
 **Product depth (safe, high-value next):**
-4. More detectors: SSRF (OOB callback), CORS misconfig, CSRF token checks, auth/session
+5. More detectors: SSRF (OOB callback), CORS misconfig, CSRF token checks, auth/session
    weaknesses, verbose-JSON PII, path traversal, SSTI. Each = oracle + testbed case + test.
-5. Background/async scan jobs + a `Scan`/`ScanFinding` persistence model (currently `/api/scan`
+6. Background/async scan jobs + a `Scan`/`ScanFinding` persistence model (currently `/api/scan`
    is synchronous) so large scans and history work; surface scans in the web UI.
-6. Wire arbitrary (non-lab) targets into the campaign so scanner findings flow into the
+7. Wire arbitrary (non-lab) targets into the campaign so scanner findings flow into the
    attack-graph + verified-remediation where the target is rebuildable (CI use case).
-7. Broaden crawler (JS-rendered apps via optional Playwright; auth login flows; sitemaps).
-8. Observability: OpenTelemetry spans around scans; Prometheus `/metrics` already exists as JSON.
+8. Broaden crawler (JS-rendered apps via optional Playwright; auth login flows; sitemaps).
+9. Observability: OpenTelemetry spans around scans; Prometheus `/metrics` already exists as JSON.
 
 **Honesty guardrail:** keep every finding backed by a deterministic oracle + evidence, keep
 false positives on the `safe` control at 0, and never add destructive payloads.
 
-## 10. Config surface (env, all optional; safe defaults)
+## 10. PyPI publish — exact state of the blocker
+
+`publish-pypi.yml` builds + `twine check`s on the runner successfully every time; only the
+upload fails. Two auth paths, both currently dead:
+
+- **Trusted Publishing (OIDC):** fails `invalid-publisher`. The claims GitHub sends are
+  correct — `repository: Aman-Thaper/dracarys`, `workflow_ref: …/publish-pypi.yml`,
+  `environment: pypi` — so the mismatch is in the pending-publisher record on PyPI. The
+  fields to re-check there are **Workflow name** (must be the *filename* `publish-pypi.yml`)
+  and **Environment name** (must be exactly `pypi`, or blank), and that it is on pypi.org
+  and not test.pypi.org.
+- **API token:** `PYPI_API_TOKEN` exists as a repo secret but holds an **empty value** —
+  `gh secret set` was run through a non-interactive shell, so it read EOF instead of the
+  pasted token. Fix by setting it in the web UI:
+  github.com/Aman-Thaper/dracarys/settings/secrets/actions. Token scope must be
+  *Entire account* (a project-scoped token cannot create a project that does not exist yet).
+
+The publish step takes `password: ${{ secrets.PYPI_API_TOKEN }}` unconditionally; the action
+uses the token when non-empty and falls back to OIDC when empty. So fixing *either* path
+publishes with no workflow edit. Nothing has been uploaded, so 0.1.2 is still free.
+
+## 11. Config surface (env, all optional; safe defaults)
 
 `DRACARYS_DATABASE_URL` · `DRACARYS_API_HOST/PORT` · `DRACARYS_LAB_HOST/PORT/PATCHED_PORT` ·
 `DRACARYS_SCOPE_ALLOWLIST` · `DRACARYS_SCOPE_ALLOWED_PORTS` · `DRACARYS_MAX_REQUESTS_PER_CAMPAIGN`

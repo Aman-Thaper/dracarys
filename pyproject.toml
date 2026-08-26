@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dracarys-dast"
-version = "0.1.1"
+version = "0.1.2"
 description = "Evidence-first DAST scanner with verified remediation. Attack. Prove. Fix. Retest."
 readme = "README.md"
 requires-python = ">=3.11"

@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.1.2
+Distribution surfaces: the scanner is now reachable from an editor, an agent, and the web.
+
+- **MCP server** (`dracarys-mcp`, extra `[mcp]`): `scan_target` and `list_detectors` over
+  stdio for MCP-capable agents. Reuses `runner.authorize`, so a non-loopback target still
+  requires an explicit authorization flag rather than the agent deciding on its own.
+  Supports both mcp SDK generations (`FastMCP` in 1.x, `MCPServer` in 2.x).
+- **VS Code extension** (`editors/vscode`): scan a target URL or open a SARIF report and
+  review findings beside your code. Ships as a `.vsix` on the release.
+- **Landing page** (`site/`) deployed to GitHub Pages.
+- `publish-pypi.yml` publishes to PyPI on release via Trusted Publishing (OIDC) — no token
+  is stored in the repository.
+- **Fix:** `scanner/report.py` hardcoded its version and had drifted; it now reads the
+  installed package metadata.
+
 ## 0.1.1
 Publishing fixes — first release usable from the GitHub Marketplace.
 

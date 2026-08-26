@@ -2,7 +2,7 @@
   "name": "dracarys-dast",
   "displayName": "DRACARYS DAST",
   "description": "Evidence-first DAST scanning from inside VS Code. Scan a running app and review findings with their captured evidence.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "aman-thaper",
   "license": "MIT",
   "icon": "icon.png",
